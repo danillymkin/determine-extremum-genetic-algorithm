@@ -16,7 +16,7 @@ def main():
 
     generation_counter = 0
 
-    while generation_counter < 100:
+    while generation_counter < 50:
         generation_counter += 1
 
         offspring = population.tournament()
@@ -38,9 +38,13 @@ def main():
         if max_fitness > best_fitness:
             best_fitness = max_fitness
 
+        x = bin_array_to_float(population[best_index])
+
         print(f"The population {generation_counter}: Max fitness = {max_fitness}, Mean fitness = {mean_fitness}")
         print("The best individual = ", *population[best_index])
-        print("X = ", bin_array_to_float(population[best_index]), "\n")
+        print("X = ", x)
+        print("f(x) = ", population[best_index].calc_target_function(x))
+        print("F(x) = ", population[best_index].calc_fitness(x), "\n")
 
     # charts
     show_graph_of_target_function()
@@ -50,6 +54,15 @@ def main():
 def show_graph_of_target_function():
     x = np.arange(-5, 5.0, 0.01)
     y = [0.1 * i - 1.7 * abs(np.sin(5.8 * i)) * np.cos(3.2 * i) for i in x]
+    plt.plot(x, y)
+    plt.axis([-10, 10, -10, 10])
+    plt.grid(True)
+    plt.show()
+
+
+def show_graph_of_fitness_function():
+    x = np.arange(-5, 5.0, 0.01)
+    y = [-1 * (0.1 * i - 1.7 * abs(np.sin(5.8 * i)) * np.cos(3.2 * i)) for i in x]
     plt.plot(x, y)
     plt.axis([-10, 10, -10, 10])
     plt.grid(True)
