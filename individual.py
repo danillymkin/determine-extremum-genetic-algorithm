@@ -31,4 +31,7 @@ class Individual(list):
                 self[i] = 0 if self[i] == 1 else 1
 
     def calc_fitness(self, x):
-        return -1 * (0.1 * x - 1.7 * abs(math.sin(5.8 * x)) * math.cos(3.2 * x))
+        return -1 * (0.1 * x - 1.7 * abs(math.sin(5.8 * x)) * math.cos(3.2 * x)) + 2.5
+
+    def calc_target_function(self, x):
+        return 0.1 * x - 1.7 * abs(math.sin(5.8 * x)) * math.cos(3.2 * x)
