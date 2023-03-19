@@ -24,11 +24,8 @@ class Individual(list):
         return individual
 
     def mutation(self):
-        probability_gene_mutation = 1.0 / CHROMOSOME_LENGTH
-
-        for i in range(len(self)):
-            if random.random() < probability_gene_mutation:
-                self[i] = 0 if self[i] == 1 else 1
+        gene_for_mutation = random.randint(0, CHROMOSOME_LENGTH)
+        self[gene_for_mutation] = 0 if self[gene_for_mutation] == 1 else 1
 
     def calc_fitness(self, x):
         return -1 * (0.1 * x - 1.7 * abs(math.sin(5.8 * x)) * math.cos(3.2 * x)) + 2.5
