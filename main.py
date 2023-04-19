@@ -1,11 +1,12 @@
 from constants import POPULATION_SIZE
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
 
 from population import Population
 from utils import bin_array_to_float, calc_target_function, calc_fitness
 
-LIMIT = 100
+LIMIT = 50
 
 
 def main():
@@ -55,15 +56,21 @@ def main():
                 ind_x = bin_array_to_float(individual)
                 graph_dots[0].append([ind_x, calc_target_function(ind_x)])
 
+            write_population_to_csv(generation_counter, population, graph_dots[0])
+
         if generation_counter == 3:
             for individual in population:
                 ind_x = bin_array_to_float(individual)
                 graph_dots[1].append([ind_x, calc_target_function(ind_x)])
 
+            write_population_to_csv(generation_counter, population, graph_dots[1])
+
         if generation_counter == LIMIT:
             for individual in population:
                 ind_x = bin_array_to_float(individual)
                 graph_dots[2].append([ind_x, calc_target_function(ind_x)])
+
+            write_population_to_csv(generation_counter, population, graph_dots[2])
 
     # charts
     show_graph_of_target_function()
@@ -111,6 +118,21 @@ def show_max_mean_fitness_graph(max_fitness, mean_fitness):
     plt.ylabel('Max / Mean fitness')
     plt.title('Dependence of max and mean fitness on generation')
     plt.show()
+
+
+def write_population_to_csv(population_number, population, dots):
+    mode = 'w' if population_number == 1 else 'a'
+    with open('populations.csv', mode) as csv_file:
+        writer = csv.writer(csv_file, delimiter=';')
+
+        if population_number == 1:
+            writer.writerow(['population_number', 'number in population', 'x', 'chromosome', 'f(x)', 'F(x)'])
+
+        for index, individual in enumerate(population):
+            data = [population_number, index + 1, round(dots[index][0], 4), individual, round(dots[index][1], 4), round(calc_fitness(dots[index][0]), 4)]
+            writer.writerow(data)
+
+    csv_file.close()
 
 
 if __name__ == '__main__':
