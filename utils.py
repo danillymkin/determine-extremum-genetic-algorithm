@@ -1,16 +1,23 @@
+from constants import BOUND_LOW, BOUND_UP, CHROMOSOME_LENGTH
+import math
+
+
 def float_to_bin_array(x):
-    x_bin = bin(int(round((x + 5) * 1000)))[2:].zfill(20)
+    up = 2 ** CHROMOSOME_LENGTH
+    x_bin = bin(round((x - BOUND_LOW) * (up - 1) / (BOUND_UP - BOUND_LOW)))[2:].zfill(20)
     return [int(x) for x in list(x_bin)]
 
 
 def bin_array_to_float(bin_arr):
+    up = 2 ** CHROMOSOME_LENGTH
     x_bin = ''.join([str(x) for x in bin_arr])
 
-    integer_part = x_bin[:10]
-    fractional_part = x_bin[10:]
+    return int(x_bin, 2) * (BOUND_UP - BOUND_LOW) / (up - 1) + BOUND_LOW
 
-    int_val = int(integer_part, 2) - 5
-    frac_val = int(fractional_part, 2) / 1024
 
-    result = int_val + frac_val
-    return result
+def calc_fitness(x):
+    return -1 * calc_target_function(x) + 2.5
+
+
+def calc_target_function(x):
+    return 0.1 * x - 1.7 * abs(math.sin(5.8 * x)) * math.cos(3.2 * x)

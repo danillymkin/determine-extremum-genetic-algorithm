@@ -2,7 +2,7 @@ import random
 
 from constants import CROSSOVER_PROBABILITY, MUTATION_PROBABILITY
 from individual import Individual
-from utils import bin_array_to_float
+from utils import bin_array_to_float, calc_fitness
 
 
 class Population(list):
@@ -44,7 +44,7 @@ class Population(list):
     def update_fitness_values(self):
         for individual in self:
             x = bin_array_to_float(individual)
-            individual.fitness_value = individual.calc_fitness(x)
+            individual.fitness_value = calc_fitness(x)
 
     def get_fitness_values(self):
         return [individual.fitness_value for individual in self]

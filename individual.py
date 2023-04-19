@@ -2,18 +2,18 @@ import random
 import math
 
 from constants import CHROMOSOME_LENGTH, BOUND_LOW, BOUND_UP
-from utils import float_to_bin_array, bin_array_to_float
+from utils import float_to_bin_array, bin_array_to_float, calc_fitness
 
 
 class Individual(list):
     def __init__(self, *args):
         super().__init__(*args)
         x = bin_array_to_float(self)
-        self.fitness_value = self.calc_fitness(x)
+        self.fitness_value = calc_fitness(x)
 
     @staticmethod
     def create():
-        x = random.randrange(BOUND_LOW, BOUND_UP + 1)
+        x = random.uniform(BOUND_LOW, BOUND_UP)
         x_bin = float_to_bin_array(x)
         return Individual([int(x) for x in list(x_bin)])
 
@@ -24,11 +24,5 @@ class Individual(list):
         return individual
 
     def mutation(self):
-        gene_for_mutation = random.randint(0, CHROMOSOME_LENGTH)
+        gene_for_mutation = random.randint(0, CHROMOSOME_LENGTH - 1)
         self[gene_for_mutation] = 0 if self[gene_for_mutation] == 1 else 1
-
-    def calc_fitness(self, x):
-        return -1 * (0.1 * x - 1.7 * abs(math.sin(5.8 * x)) * math.cos(3.2 * x)) + 2.5
-
-    def calc_target_function(self, x):
-        return 0.1 * x - 1.7 * abs(math.sin(5.8 * x)) * math.cos(3.2 * x)
